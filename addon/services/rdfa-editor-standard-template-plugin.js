@@ -3,6 +3,7 @@ import { Promise } from 'rsvp';
 import Service, { inject as service } from '@ember/service';
 import memoize from '../utils/memoize';
 import uuidv4 from 'uuidv4';
+import { task } from 'ember-concurrency';
 
 const trimTrailingWhitespace = /\s+$/g;
 
@@ -39,7 +40,7 @@ export default Service.extend({
   },
 
   /**
-   * Handles the incoming events from the editor dispatcher asynchronous
+   * Restartable task to handle the incoming events from the editor dispatcher
    *
    * @method execute
    *
@@ -48,12 +49,9 @@ export default Service.extend({
    * @param {Object} hintsRegistry Registry of hints in the editor
    * @param {Object} editor The RDFa editor instance
    *
-   * @return {Promise} A promise that resolves when the hints registry has been updated
-   *                 (adding new hints and removing outdated hints)
-   *
    * @public
    */
-  async execute(hrId, contexts, hintsRegistry, editor) {
+  execute: task(function * (hrId, contexts, hintsRegistry, editor) {
     if (contexts.length === 0) return;
 
     const hints = [];
@@ -64,12 +62,12 @@ export default Service.extend({
       hints.push(...hintsForContext);
     };
 
-    await Promise.all(contexts.map(context => generateHintsForContextAsync(context)));
+    yield Promise.all(contexts.map(context => generateHintsForContextAsync(context)));
 
     if (hints.length > 0) {
       hintsRegistry.addHints(hrId, this.get('who'), hints);
     }
-  },
+  }).restartable(),
 
   /**
    * Generates a card to hint for a given template
