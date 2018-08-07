@@ -1,10 +1,10 @@
 import memoize from 'dummy/utils/memoize';
 import { module, test } from 'qunit';
 
-module('Unit | Utility | memoize');
-
-// Replace this with your real tests.
-test('it works', function(assert) {
-  let result = memoize();
-  assert.ok(result);
+module('Unit | Utility | memoize', function() {
+  // Replace this with your real tests.
+  test('it works', function(assert) {
+    let result = memoize();
+    assert.ok(result);
+  });
 });
