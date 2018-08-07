@@ -36,6 +36,7 @@ export default Service.extend({
   who: 'editor-plugins/standard-template-card',
 
   init() {
+    this._super(...arguments);
     this.loadTemplates();
   },
 
