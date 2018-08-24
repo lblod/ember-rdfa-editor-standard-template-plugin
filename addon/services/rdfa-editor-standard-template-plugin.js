@@ -1,9 +1,10 @@
 import EmberObject from '@ember/object';
+import { computed } from '@ember/object';
 import { Promise } from 'rsvp';
 import Service, { inject as service } from '@ember/service';
 import memoize from '../utils/memoize';
 import uuidv4 from 'uuidv4';
-import { task } from 'ember-concurrency';
+import { task, waitForProperty } from 'ember-concurrency';
 
 const trimTrailingWhitespace = /\s+$/g;
 
@@ -17,14 +18,6 @@ const trimTrailingWhitespace = /\s+$/g;
 export default Service.extend({
   store: service(),
 
-  /**
-   * @property templatesLoaded
-   * @type boolean
-   * @default false
-   *
-   * @private
-  */
-  templatesLoaded: false,
 
   /**
    * @property who
@@ -40,8 +33,17 @@ export default Service.extend({
     this.loadTemplates();
   },
 
+  waitForIt: task(function * (property) {
+    yield waitForProperty(this, property);
+    return this.get(property);
+  }),
+
+  templates: computed('_templates', function() {
+    return this.get('waitForIt').perform('_templates');
+  }),
+
   /**
-   * Restartable task to handle the incoming events from the editor dispatcher
+   * Restartable task to handle the incoming events from the editor dispatchebr
    *
    * @method execute
    *
@@ -144,8 +146,7 @@ export default Service.extend({
 
     if(rdfaTypes.length === 0) return hints;
 
-    const cachedTemplates = await this.loadTemplates();
-
+    const cachedTemplates = await this.get('templates');
     const templates = this.templatesForContext(cachedTemplates, rdfaTypes);
 
     // Find hints that apply on the given text input and template
@@ -194,14 +195,9 @@ export default Service.extend({
 
    @private
    */
-  loadTemplates() {
-    if (this.get('templatesLoaded')) {
-      return new Promise(resolve => resolve(this.get('store').peekAll('template')));
-    } else {
-      this.set('templatesLoaded', true);
-      // TODO: use query instead of findAll to get non-paginated answer
-      return this.get('store').findAll('template');
-    }
+  async loadTemplates() {
+    let templates = await this.get('store').findAll('template');
+    this.set('_templates', templates);
   },
 
   /**
