@@ -73,6 +73,24 @@ export default Service.extend({
   }).restartable(),
 
   /**
+   * @method suggestHint
+   *
+   */
+  async suggestHints(context, editor) {
+    const rdfaTypes = context.context.filter(t => t.predicate == 'a').map(t => t.object);
+    const cachedTemplates = await this.get('templates');
+    const templates = this.templatesForContext(cachedTemplates, rdfaTypes);
+    if (templates.length === 0) {
+      return [];
+    }
+    else
+      for(let template of templates) {
+        template.set('html', this.instantiateUuids(template.get('body')));
+      }
+      return [{ component: 'editor-plugins/suggested-templates-card', info: {templates, editor}}];
+  },
+
+  /**
    * Generates a card to hint for a given template
    *
    * @method generateCard
