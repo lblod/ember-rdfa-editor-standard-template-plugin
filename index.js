@@ -1,8 +1,7 @@
 'use strict';
 
 module.exports = {
-  name: '@lblod/ember-rdfa-editor-standard-template-plugin',
-
+  name: require('./package').name,
   included: function (app) {
     this._super.included.apply(this, app);
     app.import('vendor/node-uuid-v4_v3.1.0.js');
