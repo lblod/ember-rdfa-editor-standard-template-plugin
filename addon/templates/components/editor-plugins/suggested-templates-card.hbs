@@ -1,8 +1,14 @@
 <p class="u-spacer--tiny">
-	Wil u graag een template invoegen voor een
+  Wil u graag een template invoegen voor een
   <ul>
     {{#each templates as |template|}}
-      <li>{{wu-button label=template.title size="small" onClick=(action 'insert' template)}}</li>
+      <li>
+        {{wu-button
+          label=template.title
+          size="small"
+          onClick=(action "insert" template)
+        }}
+      </li>
     {{/each}}
   </ul>
 </p>
