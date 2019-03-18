@@ -1,6 +1,7 @@
 import { reads } from '@ember/object/computed';
 import Component from '@ember/component';
 import layout from '../../templates/components/editor-plugins/standard-template-card';
+import instantiateUuids from '../../utils/instantiate-uuids';
 
 /**
 * Card displaying a hint of the Standard Template plugin
@@ -45,10 +46,11 @@ export default Component.extend({
   hintsRegistry: reads('info.hintsRegistry'),
 
   actions: {
-    insert() {
+    async insert() {
+      await this.info.value.reload();
       const updatedLocation = this.get('hintsRegistry').updateLocationToCurrentIndex(this.get('hrId'), this.get('location'));
       this.get('hintsRegistry').removeHintsAtLocation(this.get('location'), this.get('hrId'), 'editor-plugins/standard-template-card');
-      this.get('editor').replaceTextWithHTML(...updatedLocation, this.get('info').value);
+      this.get('editor').replaceTextWithHTML(...updatedLocation, instantiateUuids(this.get('info').value.body));
     }
   }
 });

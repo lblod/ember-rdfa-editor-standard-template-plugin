@@ -2,8 +2,6 @@ import EmberObject from '@ember/object';
 import { computed } from '@ember/object';
 import { Promise } from 'rsvp';
 import Service, { inject as service } from '@ember/service';
-import memoize from '../utils/memoize';
-import uuidv4 from 'uuidv4';
 import { task, waitForProperty } from 'ember-concurrency';
 
 const trimTrailingWhitespace = /\s+$/g;
@@ -70,7 +68,7 @@ export default Service.extend({
     if (hints.length > 0) {
       hintsRegistry.addHints(hrId, this.get('who'), hints);
     }
-  }).restartable(),
+  }),
 
   /**
    * @method suggestHint
@@ -84,9 +82,6 @@ export default Service.extend({
       return [];
     }
     else
-      for(let template of templates) {
-        template.set('html', this.instantiateUuids(template.get('body')));
-      }
       return [{ component: 'editor-plugins/suggested-templates-card', info: {templates, editor}}];
   },
 
@@ -110,7 +105,7 @@ export default Service.extend({
       location: location,
       info: {
         label: template.get('title'),
-        value: this.instantiateUuids(template.get('body')),
+        value: template,
         location, hrId, hintsRegistry, editor
       },
       card: this.get('who')
@@ -119,28 +114,6 @@ export default Service.extend({
     return card;
   },
 
-  /**
-   * Given a template string, we instantiate uuids by matching
-   * ${generateUuid()} pattern in the string and evaluating generateUuid()
-   *
-   * Note: the general approach is similar to converting a string to a template literal, but since
-   * this approach does not work in IE, we had to fall back to plain regex matching.
-   *
-   * @method instantiateUuids
-   * @param {String} templateString
-   *
-   * @return {String} template string with instantiated uuids
-   *
-   * @private
-   */
-  instantiateUuids(templateString){
-    let generateBoundUuid = memoize(uuidv4); // eslint-disable-line no-unused-vars
-    let generateUuid = uuidv4; // eslint-disable-line no-unused-vars
-    return templateString.replace(/\$\{.+?}/g, (match) => {
-      //input '${content}' and eval('content')
-      return eval(match.substring(2, match.length - 1));
-    });
-  },
 
   /**
    Generates the hints for a location based on a given RDFa context and text input.
@@ -214,7 +187,7 @@ export default Service.extend({
    @private
    */
   async loadTemplates() {
-    let templates = await this.get('store').findAll('template');
+    let templates = await this.get('store').query('template', { fields:  {templates: 'title,contexts,matches'}});
     this.set('_templates', templates);
   },
 
