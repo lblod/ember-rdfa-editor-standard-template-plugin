@@ -187,7 +187,9 @@ export default Service.extend({
    @private
    */
   async loadTemplates() {
-    let templates = await this.get('store').query('template', { fields:  {templates: 'title,contexts,matches'}});
+    let templates = await this.get('store').query(
+      'template',
+      { fields:  {templates: 'title,contexts,matches,disabled-in-contexts'}});
     this.set('_templates', templates);
   },
 
