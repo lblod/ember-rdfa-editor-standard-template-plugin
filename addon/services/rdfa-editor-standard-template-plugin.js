@@ -142,7 +142,7 @@ export default Service.extend({
 
     // Find hints that apply on the given text input and template
     templates.forEach( (template) => {
-      const matches = this.scanForMatch(context.text, template.get('matches'));
+      const matches = this.scanForMatch(context.text || '', template.get('matches'));
 
       const cards = matches.map( (match) => {
         const location = this.rebaseMatchLocation(match.location, context.region);
