@@ -12,6 +12,7 @@ import instantiateUuids from '../../utils/instantiate-uuids';
 */
 export default Component.extend({
   layout,
+  tagName: null,
 
   /**
    * Region on which the card applies

@@ -1,13 +1,11 @@
-<Say::Hint as |hint|>
+<Say::Hint @type="sectioned" as |hint|>
   <hint.header @closeHint={{action 'closeHints'}}>
     U kan hier deze sjablonen invoegen
   </hint.header>
   <hint.list as |list|>
     {{#each templates as |template|}}
-      <list.item>
-        <a class="" {{action "insert" template}}>
-          {{template.title}}
-        </a>
+      <list.item @execute={{action "insert" template}} @actionLabel="Voeg in" >
+      	{{template.title}}
       </list.item>
     {{/each}}
   </hint.list>

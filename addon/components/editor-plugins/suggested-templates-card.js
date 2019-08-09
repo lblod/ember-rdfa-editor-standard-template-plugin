@@ -6,6 +6,7 @@ export default Component.extend({
   layout,
   templates: reads('info.templates'),
   editor: reads('info.editor'),
+  tagName: null,
   actions: {
     async insert(template) {
       await template.reload();
