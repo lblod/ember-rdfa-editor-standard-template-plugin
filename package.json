@@ -24,10 +24,9 @@
     "test:all": "ember try:each"
   },
   "dependencies": {
-    "@lblod/ember-vo-webuniversum": "^0.16.3",
     "ember-cli-babel": "^7.7.3",
     "ember-cli-htmlbars": "^3.0.1",
-    "ember-mu-transform-helpers": "^1.1.0"
+    "ember-mu-transform-helpers": "^2.0.0"
   },
   "devDependencies": {
     "@ember/optional-features": "^0.7.0",
@@ -57,6 +56,9 @@
     "eslint-plugin-node": "^9.0.1",
     "loader.js": "^4.7.0",
     "qunit-dom": "^0.8.4"
+  },
+  "peerDepencies": {
+    "ember-vo-webuniversum": "^0.22.5"
   },
   "engines": {
     "node": "8.* || >= 10.*"
