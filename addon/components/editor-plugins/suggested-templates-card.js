@@ -9,7 +9,8 @@ export default Component.extend({
   actions: {
     async insert(template) {
       await template.reload();
-      this.editor.replaceTextWithHTML(...this.editor.currentSelection, instantiateUuids(template.body));
+      const selection = this.editor.selectCurrentSelection()
+      this.editor.update(selection, { set: {innerHTML: instantiateUuids(template.body)}})
       this.closeHints();
     },
     closeHints() {
