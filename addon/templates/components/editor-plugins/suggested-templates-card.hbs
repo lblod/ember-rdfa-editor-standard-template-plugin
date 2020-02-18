@@ -6,7 +6,7 @@
       </p>
     </div>
     <div class="col--2-12 u-align-right">
-      <a class="link--icon--close" href="#" {{action 'closeHints'}}>
+      <a class="link--icon--close" href="#" {{action "closeHints"}}>
         <span class="u-visually-hidden">Venster sluiten</span>
       </a>
     </div>
@@ -16,7 +16,7 @@
   <ul class="link-list link-list--bordered">
     {{#each templates as |template|}}
       <li class="link-list__item">
-        <a class="" {{action "insert" template}}>
+        <a role="button" class="" {{action "insert" template}}>
           {{template.title}}
         </a>
       </li>
