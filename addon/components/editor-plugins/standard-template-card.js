@@ -50,7 +50,8 @@ export default Component.extend({
       await this.info.value.reload();
       const updatedLocation = this.get('hintsRegistry').updateLocationToCurrentIndex(this.get('hrId'), this.get('location'));
       this.get('hintsRegistry').removeHintsAtLocation(this.get('location'), this.get('hrId'), 'editor-plugins/standard-template-card');
-      this.get('editor').replaceTextWithHTML(...updatedLocation, instantiateUuids(this.get('info').value.body));
+      const selection = this.get('editor').selectHighlight(updatedLocation)
+      this.editor.update(selection, { set: {innerHTML: instantiateUuids(this.get('info').value.body)}})
     }
   }
 });
