@@ -37,3 +37,13 @@ export default Model.extend(TemplateModelMixin, {
   // your template model here
 });
 ```
+
+### Template resource used by the plugin
+When creating a template in your database, the following properties are used by the plugin :
+- the title of the template (`title`)
+- its HTML content (`content`)
+- the words of the document the template should match on (`matches`)
+- the contexts in which it should be active (`contexts`) 
+- the contexts in which it should not be active (`disabled-in-contexts`)
+
+Note: providing multiple contexts will be processed as `( context1 OR context2 OR ... )`.
