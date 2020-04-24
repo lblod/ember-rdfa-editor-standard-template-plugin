@@ -56,13 +56,12 @@ export default Service.extend({
     if (contexts.length === 0) return;
 
     const hints = [];
+    hintsRegistry.removeHints({ rdfaBlocks: contexts, hrId, scope: this.who});
 
     const generateHintsForContextAsync = async (context) => {
       const hintsForContext = await this.generateHintsForContext(context, hrId, hintsRegistry, editor);
-      hintsRegistry.removeHintsInRegion(context.region, hrId, this.get('who'));
       hints.push(...hintsForContext);
     };
-
     yield Promise.all(contexts.map(context => generateHintsForContextAsync(context)));
 
     if (hints.length > 0) {
