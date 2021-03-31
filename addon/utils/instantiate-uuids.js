@@ -1,5 +1,5 @@
 import memoize from '../utils/memoize';
-import uuidv4 from 'uuidv4';
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * Given a template string, we instantiate uuids by matching
