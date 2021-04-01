@@ -50,6 +50,10 @@ export default class StandardTemplateCardComponent extends Component {
       scope: 'editor-plugins/standard-template-card'
     });
     const selection = this.editor.selectHighlight(this.location);
-    this.editor.update(selection, { set: {innerHTML: this.args.info.value.body}});
+    this.editor.update(selection, {
+      set: {
+        innerHTML: instantiateUuids(this.args.info.value.body)
+      }
+    });
   }
 }
