@@ -1,17 +1,15 @@
-import { reads } from '@ember/object/computed';
-import Component from '@ember/component';
-import layout from '../../templates/components/editor-plugins/standard-template-card';
+import Component from '@glimmer/component';
 import instantiateUuids from '../../utils/instantiate-uuids';
+import { action } from '@ember/object';
 
 /**
 * Card displaying a hint of the Standard Template plugin
 *
 * @module editor-standard-template-plugin
 * @class StandardTemplateCard
-* @extends Ember.Component
+* @extends Glimmer.Component
 */
-export default Component.extend({
-  layout,
+export default class StandardTemplateCardComponent extends Component {
 
   /**
    * Region on which the card applies
@@ -19,15 +17,10 @@ export default Component.extend({
    * @type [number,number]
    * @private
   */
-  location: reads('info.location'),
+  get location() {
+    return this.args.info.location;
+  }
 
-  /**
-   * Unique identifier of the event in the hints registry
-   * @property hrId
-   * @type Object
-   * @private
-  */
-  hrId: reads('info.hrId'),
 
   /**
    * The RDFa editor instance
@@ -35,23 +28,32 @@ export default Component.extend({
    * @type RdfaEditor
    * @private
   */
-  editor: reads('info.editor'),
+  get editor() {
+    return this.args.info.editor;
+  }
 
   /**
    * Hints registry storing the cards
    * @property hintsRegistry
    * @type HintsRegistry
    * @private
-  */
-  hintsRegistry: reads('info.hintsRegistry'),
-
-  actions: {
-    async insert() {
-      await this.info.value.reload();
-      const updatedLocation = this.get('hintsRegistry').updateLocationToCurrentIndex(this.get('hrId'), this.get('location'));
-      this.get('hintsRegistry').removeHintsAtLocation(this.get('location'), this.get('hrId'), 'editor-plugins/standard-template-card');
-      const selection = this.get('editor').selectHighlight(updatedLocation)
-      this.editor.update(selection, { set: {innerHTML: instantiateUuids(this.get('info').value.body)}})
-    }
+   */
+  get hintsRegistry() {
+    return this.args.info.hintsRegistry;
   }
-});
+
+  @action
+  async insert() {
+    await this.args.info.value.reload();
+    this.hintsRegistry.removeHints({
+      region: this.location,
+      scope: 'editor-plugins/standard-template-card'
+    });
+    const selection = this.editor.selectHighlight(this.location);
+    this.editor.update(selection, {
+      set: {
+        innerHTML: instantiateUuids(this.args.info.value.body)
+      }
+    });
+  }
+}

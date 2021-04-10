@@ -1,11 +1,10 @@
-import EmberObject from '@ember/object';
-import { computed } from '@ember/object';
-import { Promise } from 'rsvp';
 import Service, { inject as service } from '@ember/service';
-import { task, waitForProperty } from 'ember-concurrency';
+import { task } from 'ember-concurrency-decorators';
+import { waitForProperty } from 'ember-concurrency';
+import { tracked } from '@glimmer/tracking';
 
 const trimTrailingWhitespace = /\s+$/g;
-
+const HINT_COMPONENT_NAME = "editor-plugins/standard-template-card";
 /**
 * RDFa Editor plugin that hints standard templates based on input keywords
 *
@@ -13,76 +12,47 @@ const trimTrailingWhitespace = /\s+$/g;
 * @class RdfaEditorStandardTemplatePlugin
 * @extends Ember.Service
 */
-export default Service.extend({
-  store: service(),
 
+export default class RdfaEditorStandardTemplatePluginService extends Service {
+  @service store;
+  @tracked templates;
+  editorApi = "0.1";
 
-  /**
-   * @property who
-   * @type string
-   * @default 'editor-plugins/console-logger-card'
-   *
-   * @private
-  */
-  who: 'editor-plugins/standard-template-card',
-
-  init() {
-    this._super(...arguments);
+  constructor() {
+    super(...arguments);
     this.loadTemplates();
-  },
+  }
 
-  waitForIt: task(function * (property) {
-    yield waitForProperty(this, property);
-    return this.get(property);
-  }),
+  @task
+  * execute(rdfaBlocks, hintsRegistry, editor) {
+    if (rdfaBlocks.length == 0) return;
 
-  templates: computed('_templates', function() {
-    return this.get('waitForIt').perform('_templates');
-  }),
-
-  /**
-   * Restartable task to handle the incoming events from the editor dispatchebr
-   *
-   * @method execute
-   *
-   * @param {string} hrId Unique identifier of the event in the hintsRegistry
-   * @param {Array} contexts RDFa contexts of the text snippets the event applies on
-   * @param {Object} hintsRegistry Registry of hints in the editor
-   * @param {Object} editor The RDFa editor instance
-   *
-   * @public
-   */
-  execute: task(function * (hrId, contexts, hintsRegistry, editor) {
-    if (contexts.length === 0) return;
+    yield waitForProperty(this, 'templates');
 
     const hints = [];
-    hintsRegistry.removeHints({ rdfaBlocks: contexts, hrId, scope: this.who});
-
-    const generateHintsForContextAsync = async (context) => {
-      const hintsForContext = await this.generateHintsForContext(context, hrId, hintsRegistry, editor);
+    hintsRegistry.removeHints({ rdfaBlocks, scope: HINT_COMPONENT_NAME});
+    for (let block of rdfaBlocks) {
+      const hintsForContext = this.generateHintsForContext(block, hintsRegistry, editor);
       hints.push(...hintsForContext);
-    };
-    yield Promise.all(contexts.map(context => generateHintsForContextAsync(context)));
-
-    if (hints.length > 0) {
-      hintsRegistry.addHints(hrId, this.get('who'), hints);
     }
-  }),
+    hintsRegistry.addHints(HINT_COMPONENT_NAME, hints);
+  }
 
   /**
    * @method suggestHint
    *
    */
   async suggestHints(context, editor) {
+    await waitForProperty(this, 'templates');
     const rdfaTypes = context.context.filter(t => t.predicate == 'a').map(t => t.object);
-    const cachedTemplates = await this.get('templates');
+    const cachedTemplates = this.templates;
     const templates = this.templatesForContext(cachedTemplates, rdfaTypes);
     if (templates.length === 0) {
       return [];
     }
     else
       return [{ component: 'editor-plugins/suggested-templates-card', info: {templates, editor}}];
-  },
+  }
 
   /**
    * Generates a card to hint for a given template
@@ -99,19 +69,17 @@ export default Service.extend({
    *
    * @private
    */
-  generateCard(template, location, hrId, hintsRegistry, editor) {
-    const card = EmberObject.create({
-      location: location,
+  generateCard(template, location, hintsRegistry, editor) {
+    return {
+      location,
       info: {
-        label: template.get('title'),
+        label: template.title,
         value: template,
-        location, hrId, hintsRegistry, editor
+        location, hintsRegistry, editor
       },
-      card: this.get('who')
-    });
-
-    return card;
-  },
+      card: HINT_COMPONENT_NAME
+    };
+  }
 
 
   /**
@@ -129,14 +97,14 @@ export default Service.extend({
 
    @private
    */
-  async generateHintsForContext(context, hrId, hintsRegistry, editor) {
+  generateHintsForContext(context, hintsRegistry, editor) {
     const hints = [];
 
     const rdfaTypes = context.context.filter(t => t.predicate == 'a').map(t => t.object);
 
     if(rdfaTypes.length === 0) return hints;
 
-    const cachedTemplates = await this.get('templates');
+    const cachedTemplates = this.templates;
     const templates = this.templatesForContext(cachedTemplates, rdfaTypes);
 
     // Find hints that apply on the given text input and template
@@ -145,14 +113,14 @@ export default Service.extend({
 
       const cards = matches.map( (match) => {
         const location = this.rebaseMatchLocation(match.location, context.region);
-        return this.generateCard(template, location, hrId, hintsRegistry, editor);
+        return this.generateCard(template, location, hintsRegistry, editor);
       });
 
       hints.push(...cards);
     });
 
     return hints;
-  },
+  }
 
   /**
    Filter the valid templates for a context.
@@ -172,7 +140,7 @@ export default Service.extend({
         && rdfaTypes.filter(e => template.get('disabledInContexts').includes(e)).length === 0;
     };
     return templates.filter(isMatchingForContext);
-  },
+  }
 
   /**
    Loads the standard templates.
@@ -189,8 +157,8 @@ export default Service.extend({
     let templates = await this.get('store').query(
       'template',
       { fields:  {templates: 'title,contexts,matches,disabled-in-contexts'}});
-    this.set('_templates', templates);
-  },
+    this.templates = templates;
+  }
 
   /**
    Rebase a region with relative locations against a base region
@@ -206,7 +174,7 @@ export default Service.extend({
    */
   rebaseMatchLocation([start, end], region) {
     return [region[0] + start, region[0] + end];
-  },
+  }
 
   /**
    Scan a text snippet for matching template keywords.
@@ -258,4 +226,4 @@ export default Service.extend({
 
     return matches;
   }
-});
+}
