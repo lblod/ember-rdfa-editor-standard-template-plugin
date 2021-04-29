@@ -13,8 +13,7 @@ export default class SuggestedTemplatesCardComponent extends Component {
   @action
   async insert(template) {
     await template.reload();
-    const selection = this.editor.selectCurrentSelection();
-    this.editor.update(selection, { set: {innerHTML: instantiateUuids(template.body)}});
+    this.editor.executeCommand('insert-html', instantiateUuids(template.body));
     this.closeHints();
   }
 
