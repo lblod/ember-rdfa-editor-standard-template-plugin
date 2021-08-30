@@ -4,19 +4,19 @@ import { waitForProperty } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 
 const trimTrailingWhitespace = /\s+$/g;
-const HINT_COMPONENT_NAME = "editor-plugins/standard-template-card";
+const HINT_COMPONENT_NAME = 'editor-plugins/standard-template-card';
 /**
-* RDFa Editor plugin that hints standard templates based on input keywords
-*
-* @module editor-standard-template-plugin
-* @class RdfaEditorStandardTemplatePlugin
-* @extends Ember.Service
-*/
+ * RDFa Editor plugin that hints standard templates based on input keywords
+ *
+ * @module editor-standard-template-plugin
+ * @class RdfaEditorStandardTemplatePlugin
+ * @extends Ember.Service
+ */
 
 export default class RdfaEditorStandardTemplatePluginService extends Service {
   @service store;
   @tracked templates;
-  editorApi = "0.1";
+  editorApi = '0.1';
 
   constructor() {
     super(...arguments);
@@ -24,15 +24,19 @@ export default class RdfaEditorStandardTemplatePluginService extends Service {
   }
 
   @task
-  * execute(rdfaBlocks, hintsRegistry, editor) {
+  *execute(rdfaBlocks, hintsRegistry, editor) {
     if (rdfaBlocks.length == 0) return;
 
     yield waitForProperty(this, 'templates');
 
     const hints = [];
-    hintsRegistry.removeHints({ rdfaBlocks, scope: HINT_COMPONENT_NAME});
+    hintsRegistry.removeHints({ rdfaBlocks, scope: HINT_COMPONENT_NAME });
     for (let block of rdfaBlocks) {
-      const hintsForContext = this.generateHintsForContext(block, hintsRegistry, editor);
+      const hintsForContext = this.generateHintsForContext(
+        block,
+        hintsRegistry,
+        editor
+      );
       hints.push(...hintsForContext);
     }
     hintsRegistry.addHints(HINT_COMPONENT_NAME, hints);
@@ -44,14 +48,20 @@ export default class RdfaEditorStandardTemplatePluginService extends Service {
    */
   async suggestHints(context, editor) {
     await waitForProperty(this, 'templates');
-    const rdfaTypes = context.context.filter(t => t.predicate == 'a').map(t => t.object);
+    const rdfaTypes = context.context
+      .filter((t) => t.predicate == 'a')
+      .map((t) => t.object);
     const cachedTemplates = this.templates;
     const templates = this.templatesForContext(cachedTemplates, rdfaTypes);
     if (templates.length === 0) {
       return [];
-    }
-    else
-      return [{ component: 'editor-plugins/suggested-templates-card', info: {templates, editor}}];
+    } else
+      return [
+        {
+          component: 'editor-plugins/suggested-templates-card',
+          info: { templates, editor },
+        },
+      ];
   }
 
   /**
@@ -75,12 +85,13 @@ export default class RdfaEditorStandardTemplatePluginService extends Service {
       info: {
         label: template.title,
         value: template,
-        location, hintsRegistry, editor
+        location,
+        hintsRegistry,
+        editor,
       },
-      card: HINT_COMPONENT_NAME
+      card: HINT_COMPONENT_NAME,
     };
   }
-
 
   /**
    Generates the hints for a location based on a given RDFa context and text input.
@@ -100,19 +111,27 @@ export default class RdfaEditorStandardTemplatePluginService extends Service {
   generateHintsForContext(context, hintsRegistry, editor) {
     const hints = [];
 
-    const rdfaTypes = context.context.filter(t => t.predicate == 'a').map(t => t.object);
+    const rdfaTypes = context.context
+      .filter((t) => t.predicate == 'a')
+      .map((t) => t.object);
 
-    if(rdfaTypes.length === 0) return hints;
+    if (rdfaTypes.length === 0) return hints;
 
     const cachedTemplates = this.templates;
     const templates = this.templatesForContext(cachedTemplates, rdfaTypes);
 
     // Find hints that apply on the given text input and template
-    templates.forEach( (template) => {
-      const matches = this.scanForMatch(context.text || '', template.get('matches'));
+    templates.forEach((template) => {
+      const matches = this.scanForMatch(
+        context.text || '',
+        template.get('matches')
+      );
 
-      const cards = matches.map( (match) => {
-        const location = this.rebaseMatchLocation(match.location, context.region);
+      const cards = matches.map((match) => {
+        const location = this.rebaseMatchLocation(
+          match.location,
+          context.region
+        );
         return this.generateCard(template, location, hintsRegistry, editor);
       });
 
@@ -134,10 +153,14 @@ export default class RdfaEditorStandardTemplatePluginService extends Service {
 
    @private
    */
-  templatesForContext(templates, rdfaTypes){
-    let isMatchingForContext = template => {
-      return rdfaTypes.filter(e => template.get('contexts').includes(e)).length > 0
-        && rdfaTypes.filter(e => template.get('disabledInContexts').includes(e)).length === 0;
+  templatesForContext(templates, rdfaTypes) {
+    let isMatchingForContext = (template) => {
+      return (
+        rdfaTypes.filter((e) => template.get('contexts').includes(e)).length >
+          0 &&
+        rdfaTypes.filter((e) => template.get('disabledInContexts').includes(e))
+          .length === 0
+      );
     };
     return templates.filter(isMatchingForContext);
   }
@@ -154,9 +177,9 @@ export default class RdfaEditorStandardTemplatePluginService extends Service {
    @private
    */
   async loadTemplates() {
-    let templates = await this.get('store').query(
-      'template',
-      { fields:  {templates: 'title,contexts,matches,disabled-in-contexts'}});
+    let templates = await this.store.query('template', {
+      fields: { templates: 'title,contexts,matches,disabled-in-contexts' },
+    });
     this.templates = templates;
   }
 
@@ -196,12 +219,12 @@ export default class RdfaEditorStandardTemplatePluginService extends Service {
    */
   scanForMatch(text, keywords) {
     text = text.toLowerCase().replace(trimTrailingWhitespace, '');
-    keywords = keywords.map(k => k.toLowerCase());
+    keywords = keywords.map((k) => k.toLowerCase());
 
     const matches = [];
 
     // Full matches
-    keywords.forEach( (keyword) => {
+    keywords.forEach((keyword) => {
       let i = text.indexOf(keyword);
       while (i != -1) {
         const matchedLocation = [i, i + keyword.length];
@@ -211,11 +234,14 @@ export default class RdfaEditorStandardTemplatePluginService extends Service {
     });
 
     // Partial matches at the end of the string
-    for (let i=0; i < text.length - 3; ++i) { // matching part must be 4 chars long at least
+    for (let i = 0; i < text.length - 3; ++i) {
+      // matching part must be 4 chars long at least
       const slicedText = text.slice(i);
 
       // find all partial matches that are not a full match
-      const matchedKeyword = keywords.find(k => k.startsWith(slicedText) && k != slicedText);
+      const matchedKeyword = keywords.find(
+        (k) => k.startsWith(slicedText) && k != slicedText
+      );
 
       if (matchedKeyword) {
         const matchedLocation = [i, i + slicedText.length];

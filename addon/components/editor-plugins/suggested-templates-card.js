@@ -22,4 +22,3 @@ export default class SuggestedTemplatesCardComponent extends Component {
     this.args.closeHints();
   }
 }
-
