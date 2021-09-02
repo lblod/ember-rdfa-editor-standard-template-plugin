@@ -4,7 +4,8 @@ import { module, test } from 'qunit';
 module('Unit | Utility | instantiate-uuids', function () {
   // Replace this with your real tests.
   test('it works', function (assert) {
-    let result = instantiateUuids();
-    assert.ok(result);
+    const templateString = 'http://data.lblod.info/id/besluiten/${generateUuid()}"';
+    let result = instantiateUuids(templateString);
+    assert.ok(! result.includes('generateUuid'));
   });
 });
