@@ -73,7 +73,6 @@
     "qunit-dom": "^1.6.0"
   },
   "peerDepencies": {
-    "ember-appuniversum": "*",
     "ember-concurrency": "*",
     "ember-concurrency-decorators": "^2.0.3"
   },

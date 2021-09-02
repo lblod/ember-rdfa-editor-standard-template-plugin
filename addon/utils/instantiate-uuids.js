@@ -23,4 +23,3 @@ export default function instantiateUuids(templateString) {
     return eval(match.substring(2, match.length - 1));
   });
 }
-

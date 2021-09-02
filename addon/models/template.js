@@ -1,5 +1,6 @@
-import Model from 'ember-data/model';
+import Model from '@ember-data/model';
+// eslint-disable-next-line ember/no-mixins
 import TemplateModelMixin from '../mixins/template-model';
 
-export default Model.extend(TemplateModelMixin, {
-});
+// eslint-disable-next-line ember/no-classic-classes
+export default Model.extend(TemplateModelMixin, {});
