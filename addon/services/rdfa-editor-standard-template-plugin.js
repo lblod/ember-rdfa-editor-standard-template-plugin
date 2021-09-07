@@ -1,10 +1,10 @@
-import Service, { inject as service } from '@ember/service';
-import { task } from 'ember-concurrency-decorators';
-import { waitForProperty } from 'ember-concurrency';
-import { tracked } from '@glimmer/tracking';
+import Service, { inject as service } from "@ember/service";
+import { task } from "ember-concurrency-decorators";
+import { waitForProperty } from "ember-concurrency";
+import { tracked } from "@glimmer/tracking";
 
 const trimTrailingWhitespace = /\s+$/g;
-const HINT_COMPONENT_NAME = 'editor-plugins/standard-template-card';
+const HINT_COMPONENT_NAME = "editor-plugins/standard-template-card";
 /**
  * RDFa Editor plugin that hints standard templates based on input keywords
  *
@@ -16,18 +16,22 @@ const HINT_COMPONENT_NAME = 'editor-plugins/standard-template-card';
 export default class RdfaEditorStandardTemplatePluginService extends Service {
   @service store;
   @tracked templates;
-  editorApi = '0.1';
+  editorApi = "0.1";
 
-  constructor() {
-    super(...arguments);
-    this.loadTemplates();
+  initialize(editor) {
+    editor.registerWidget({
+      componentName: HINT_COMPONENT_NAME,
+      identifier: HINT_COMPONENT_NAME,
+      desiredLocation: "toolbar"
+    });
+    editor.on("TextInserted", rdfaScope, handler);
   }
 
   @task
-  *execute(rdfaBlocks, hintsRegistry, editor) {
+  * execute(rdfaBlocks, hintsRegistry, editor) {
     if (rdfaBlocks.length == 0) return;
 
-    yield waitForProperty(this, 'templates');
+    yield waitForProperty(this, "templates");
 
     const hints = [];
     hintsRegistry.removeHints({ rdfaBlocks, scope: HINT_COMPONENT_NAME });
@@ -47,9 +51,9 @@ export default class RdfaEditorStandardTemplatePluginService extends Service {
    *
    */
   async suggestHints(context, editor) {
-    await waitForProperty(this, 'templates');
+    await waitForProperty(this, "templates");
     const rdfaTypes = context.context
-      .filter((t) => t.predicate == 'a')
+      .filter((t) => t.predicate == "a")
       .map((t) => t.object);
     const cachedTemplates = this.templates;
     const templates = this.templatesForContext(cachedTemplates, rdfaTypes);
@@ -58,9 +62,9 @@ export default class RdfaEditorStandardTemplatePluginService extends Service {
     } else
       return [
         {
-          component: 'editor-plugins/suggested-templates-card',
-          info: { templates, editor },
-        },
+          component: "editor-plugins/suggested-templates-card",
+          info: { templates, editor }
+        }
       ];
   }
 
@@ -87,9 +91,9 @@ export default class RdfaEditorStandardTemplatePluginService extends Service {
         value: template,
         location,
         hintsRegistry,
-        editor,
+        editor
       },
-      card: HINT_COMPONENT_NAME,
+      card: HINT_COMPONENT_NAME
     };
   }
 
@@ -112,7 +116,7 @@ export default class RdfaEditorStandardTemplatePluginService extends Service {
     const hints = [];
 
     const rdfaTypes = context.context
-      .filter((t) => t.predicate == 'a')
+      .filter((t) => t.predicate == "a")
       .map((t) => t.object);
 
     if (rdfaTypes.length === 0) return hints;
@@ -123,8 +127,8 @@ export default class RdfaEditorStandardTemplatePluginService extends Service {
     // Find hints that apply on the given text input and template
     templates.forEach((template) => {
       const matches = this.scanForMatch(
-        context.text || '',
-        template.get('matches')
+        context.text || "",
+        template.get("matches")
       );
 
       const cards = matches.map((match) => {
@@ -156,9 +160,9 @@ export default class RdfaEditorStandardTemplatePluginService extends Service {
   templatesForContext(templates, rdfaTypes) {
     let isMatchingForContext = (template) => {
       return (
-        rdfaTypes.filter((e) => template.get('contexts').includes(e)).length >
-          0 &&
-        rdfaTypes.filter((e) => template.get('disabledInContexts').includes(e))
+        rdfaTypes.filter((e) => template.get("contexts").includes(e)).length >
+        0 &&
+        rdfaTypes.filter((e) => template.get("disabledInContexts").includes(e))
           .length === 0
       );
     };
@@ -166,19 +170,19 @@ export default class RdfaEditorStandardTemplatePluginService extends Service {
   }
 
   /**
-   Loads the standard templates.
-   The first time the templates will be loaded from a backend.
-   Afterwards the templates will be fetched from the store.
+   loads the standard templates.
+   the first time the templates will be loaded from a backend.
+   afterwards the templates will be fetched from the store.
 
-   @method loadTemplates
+   @method loadtemplates
 
-   @return {Promise} A promise that resolves to a RecordArray of templates
+   @return {promise} a promise that resolves to a recordarray of templates
 
    @private
    */
-  async loadTemplates() {
-    let templates = await this.store.query('template', {
-      fields: { templates: 'title,contexts,matches,disabled-in-contexts' },
+  async loadtemplates() {
+    let templates = await this.store.query("template", {
+      fields: { templates: "title,contexts,matches,disabled-in-contexts" }
     });
     this.templates = templates;
   }
@@ -205,7 +209,7 @@ export default class RdfaEditorStandardTemplatePluginService extends Service {
    Implemented by:
    1. scanning the text for a full match on one or more of the keywords.
    2. scanning the end of the text for a partial match on one or more of the keywords
-      assuming the user is entering additional input at the end of the text
+   assuming the user is entering additional input at the end of the text
 
    @method scanForMatch
 
@@ -213,12 +217,12 @@ export default class RdfaEditorStandardTemplatePluginService extends Service {
    @param {Array} keywords Array of template keywords to match the text snippet with
 
    @return {Array} Array containing objects with the part of the text that matches
-                   together with its relative position in the text.
+   together with its relative position in the text.
 
    @private
    */
   scanForMatch(text, keywords) {
-    text = text.toLowerCase().replace(trimTrailingWhitespace, '');
+    text = text.toLowerCase().replace(trimTrailingWhitespace, "");
     keywords = keywords.map((k) => k.toLowerCase());
 
     const matches = [];

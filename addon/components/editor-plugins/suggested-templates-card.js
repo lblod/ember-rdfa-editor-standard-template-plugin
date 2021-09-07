@@ -1,13 +1,13 @@
 import Component from '@glimmer/component';
 import instantiateUuids from '../../utils/instantiate-uuids';
 import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
 
 export default class SuggestedTemplatesCardComponent extends Component {
-  get templates() {
-    return this.args.info.templates;
-  }
+  @service templates;
+
   get editor() {
-    return this.args.info.editor;
+    return this.args.editor;
   }
 
   @action
@@ -19,6 +19,6 @@ export default class SuggestedTemplatesCardComponent extends Component {
 
   @action
   closeHints() {
-    this.args.closeHints();
+    this.args.onClose();
   }
 }
