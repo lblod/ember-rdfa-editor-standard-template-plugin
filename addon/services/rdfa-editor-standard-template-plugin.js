@@ -24,27 +24,26 @@ export default class RdfaEditorStandardTemplatePluginService extends Service {
       identifier: HINT_COMPONENT_NAME,
       desiredLocation: "toolbar"
     });
-    editor.on("TextInserted", rdfaScope, handler);
   }
 
-  @task
-  * execute(rdfaBlocks, hintsRegistry, editor) {
-    if (rdfaBlocks.length == 0) return;
-
-    yield waitForProperty(this, "templates");
-
-    const hints = [];
-    hintsRegistry.removeHints({ rdfaBlocks, scope: HINT_COMPONENT_NAME });
-    for (let block of rdfaBlocks) {
-      const hintsForContext = this.generateHintsForContext(
-        block,
-        hintsRegistry,
-        editor
-      );
-      hints.push(...hintsForContext);
-    }
-    hintsRegistry.addHints(HINT_COMPONENT_NAME, hints);
-  }
+  // @task
+  // * execute(rdfaBlocks, hintsRegistry, editor) {
+  //   if (rdfaBlocks.length == 0) return;
+  //
+  //   yield waitForProperty(this, "templates");
+  //
+  //   const hints = [];
+  //   hintsRegistry.removeHints({ rdfaBlocks, scope: HINT_COMPONENT_NAME });
+  //   for (let block of rdfaBlocks) {
+  //     const hintsForContext = this.generateHintsForContext(
+  //       block,
+  //       hintsRegistry,
+  //       editor
+  //     );
+  //     hints.push(...hintsForContext);
+  //   }
+  //   hintsRegistry.addHints(HINT_COMPONENT_NAME, hints);
+  // }
 
   /**
    * @method suggestHint
