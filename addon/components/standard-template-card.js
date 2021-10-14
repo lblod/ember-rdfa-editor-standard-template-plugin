@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import instantiateUuids from '../../utils/instantiate-uuids';
+import instantiateUuids from '../utils/instantiate-uuids';
 
 /**
  * Card displaying a hint of the Standard Template plugin
@@ -24,14 +24,14 @@ export default class StandardTemplateCardComponent extends Component {
     return this.templates.fetchTemplates.isRunning;
   }
 
-  get editor() {
-    return this.args.editor;
+  get controller() {
+    return this.args.controller;
   }
 
   @action
   async insert(template) {
     await template.reload();
-    this.args.editor.executeCommand(
+    this.controller.executeCommand(
       'insert-html',
       instantiateUuids(template.body)
     );

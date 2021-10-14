@@ -32,7 +32,7 @@
     "ember-cli-babel": "^7.23.0",
     "ember-cli-htmlbars": "^5.3.1",
     "ember-mu-transform-helpers": "^2.0.0",
-    "ember-auto-import": "^1.10.1",
+    "ember-auto-import": "^2.2.2",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
@@ -41,6 +41,7 @@
     "@ember/test-helpers": "^2.1.4",
     "@glimmer/component": "^1.0.3",
     "@glimmer/tracking": "^1.0.3",
+    "@lblod/ember-rdfa-editor": "^0.47.1",
     "babel-eslint": "^10.1.0",
     "broccoli-asset-rev": "^3.0.0",
     "ember-cli": "~3.24.0",
@@ -74,7 +75,8 @@
     "prettier": "^2.2.1",
     "qunit": "^2.13.0",
     "qunit-dom": "^1.6.0",
-    "sass": "^1.39.0"
+    "sass": "^1.39.0",
+    "webpack": "^5.58.2"
   },
   "peerDepencies": {
     "ember-concurrency": "*",
