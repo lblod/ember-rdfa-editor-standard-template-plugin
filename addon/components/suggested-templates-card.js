@@ -1,19 +1,24 @@
 import Component from '@glimmer/component';
-import instantiateUuids from '../../utils/instantiate-uuids';
+import instantiateUuids from '../utils/instantiate-uuids';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 
 export default class SuggestedTemplatesCardComponent extends Component {
   @service templates;
+  @tracked active = true;
 
-  get editor() {
-    return this.args.editor;
+  get controller() {
+    return this.args.controller;
   }
 
   @action
   async insert(template) {
     await template.reload();
-    this.editor.executeCommand('insert-html', instantiateUuids(template.body));
+    this.controller.executeCommand(
+      'insert-html',
+      instantiateUuids(template.body)
+    );
     this.closeHints();
   }
 

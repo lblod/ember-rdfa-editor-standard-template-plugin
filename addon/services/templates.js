@@ -6,7 +6,9 @@ export default class TemplatesService extends Service {
 
   @task
   *fetchTemplates() {
-    return yield this.loadTemplates();
+    const templates = yield this.loadTemplates();
+    console.log(templates);
+    return templates;
   }
 
   async loadTemplates() {

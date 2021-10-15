@@ -1,12 +1,14 @@
-<AuDropdown @dropdownTitle="Voeg sjabloon in">
+{{#if this.hasApplicableTemplates}}
+  <AuDropdown @dropdownTitle="Voeg sjabloon in">
 
-  {{#unless this.busy}}
-    {{#each this.templates.fetchTemplates.last.value as |template|}}
-      <AuButton @skin="tertiary" role="menuItem" {{on "click" (fn this.insert template)}}>
-        <AuIcon @icon="edit" @alignment="left" />
-        {{template.title}}
-      </AuButton>
-    {{/each}}
-  {{/unless}}
+    {{#unless this.busy}}
+      {{#each this.applicableTemplates as |template|}}
+        <AuButton @skin="tertiary" role="menuItem" {{on "click" (fn this.insert template)}}>
+          <AuIcon @icon="edit" @alignment="left" />
+          {{template.title}}
+        </AuButton>
+      {{/each}}
+    {{/unless}}
 
-</AuDropdown>
+  </AuDropdown>
+{{/if}}

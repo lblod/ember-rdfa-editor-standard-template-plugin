@@ -13,11 +13,13 @@ import instantiateUuids from '../utils/instantiate-uuids';
  */
 export default class StandardTemplateCardComponent extends Component {
   @tracked menuOpen = false;
+  @tracked context;
   @service templates;
 
   constructor() {
     super(...arguments);
     this.templates.fetchTemplates.perform();
+    this.args.controller.onEvent('selectionChanged', this.trackContext);
   }
 
   get busy() {
@@ -26,6 +28,30 @@ export default class StandardTemplateCardComponent extends Component {
 
   get controller() {
     return this.args.controller;
+  }
+
+  get applicableTemplates() {
+    if (!this.context?.types) {
+      return [];
+    }
+    return (
+      this.templates.fetchTemplates.last.value?.filter((template) => {
+        return (
+          template.contexts.includes(...this.context.types) &&
+          !template.disabledInContexts.includes(...this.context.types)
+        );
+      }) || []
+    );
+  }
+
+  get hasApplicableTemplates() {
+    return this.applicableTemplates.length > 0;
+  }
+
+  @action
+  trackContext(event) {
+    console.log('EVENT', event.payload);
+    this.context = event.payload.rdfaContext;
   }
 
   @action
