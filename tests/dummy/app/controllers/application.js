@@ -10,7 +10,7 @@ export default class ApplicationController extends Controller {
     this.controller = controller;
     controller.executeCommand(
       'insert-html',
-      `<div typeof="besluit:Besluit">yeet</div>`,
+      `<div prefix="besluit: http://data.vlaanderen.be/ns/besluit#" typeof="besluit:Besluit"><div property="heeftBehandeling" typeof="besluit:BehandelingVanAgendapunt">skeet</div>yeet</div>`,
       controller.rangeFactory.fromAroundAll()
     );
   }

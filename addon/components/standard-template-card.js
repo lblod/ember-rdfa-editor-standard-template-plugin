@@ -31,15 +31,29 @@ export default class StandardTemplateCardComponent extends Component {
   }
 
   get applicableTemplates() {
-    if (!this.context?.types) {
+    if (!this.context) {
       return [];
+    }
+    const dataset = this.context;
+    console.log(dataset);
+    for (const quad of dataset) {
+      console.log(quad);
     }
     return (
       this.templates.fetchTemplates.last.value?.filter((template) => {
-        return (
-          template.contexts.includes(...this.context.types) &&
-          !template.disabledInContexts.includes(...this.context.types)
+        const typePredicate = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
+        const containsTypes = dataset.some(
+          (quad) =>
+            quad.predicate.value === typePredicate &&
+            template.contexts.includes(quad.object.value)
         );
+        const containsDisabledTypes = dataset.some(
+          (quad) =>
+            quad.predicate.value === typePredicate &&
+            template.disabledInContexts.includes(quad.object.value)
+        );
+
+        return containsTypes && !containsDisabledTypes;
       }) || []
     );
   }
@@ -51,7 +65,7 @@ export default class StandardTemplateCardComponent extends Component {
   @action
   trackContext(event) {
     console.log('EVENT', event.payload);
-    this.context = event.payload.rdfaContext;
+    this.context = event.payload.parentDataset;
   }
 
   @action
