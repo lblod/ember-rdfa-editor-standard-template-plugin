@@ -13,5 +13,10 @@ export default class StandardTemplatePlugin {
       componentName: 'standard-template-card',
       identifier: 'standard-template-card',
     });
+    controller.registerWidget({
+      desiredLocation: 'sidebar',
+      componentName: 'suggested-templates-card',
+      identifier: 'suggested-templates-card',
+    });
   }
 }
