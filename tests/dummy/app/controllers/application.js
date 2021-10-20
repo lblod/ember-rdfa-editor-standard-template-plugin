@@ -11,13 +11,13 @@ export default class ApplicationController extends Controller {
   @tracked xmlDebuggerOpen = false;
   @tracked debuggerContent = '';
   @tracked htmlDebuggerOpen = false;
-  @tracked _editorController;
   unloadListener;
   xmlEditor;
   htmlEditor;
   plugins = ['standard-template'];
   controller;
 
+  @tracked _editorController;
 
   get editorController() {
     if (!this._editorController) {
@@ -97,11 +97,34 @@ export default class ApplicationController extends Controller {
     );
   }
 
+  getXmlContent() {
+    const content = this.editorController.executeQuery(
+      'get-content',
+      'xml',
+      this.editorController.rangeFactory.fromAroundAll()
+    );
+    if (!content) {
+      return '';
+    }
+    return xmlFormat(content.innerHTML);
+  }
+
+  getHtmlContent() {
+    const content = this.editorController.executeQuery(
+      'get-content',
+      'html',
+      this.editorController.rangeFactory.fromAroundAll()
+    );
+    if (!content) {
+      return '';
+    }
+    return content.innerHTML;
+  }
+
   @action
   rdfaEditorInit(controller) {
     const presetContent = localStorage.getItem('EDITOR_CONTENT') ?? '';
     this._editorController = controller;
-    console.log(this.editorController);
     this.setHtmlContent(presetContent);
     const editorDone = new CustomEvent('editor-done');
     window.dispatchEvent(editorDone);
@@ -128,10 +151,10 @@ export default class ApplicationController extends Controller {
   @action openContentDebugger(type) {
     if (this._editorController) {
       if (type === 'xml') {
-        // this.debuggerContent = this.rdfaEditor.xmlContentPrettified;
+        this.debuggerContent = this.getXmlContent();
         this.xmlDebuggerOpen = true;
       } else {
-        // this.debuggerContent = this.rdfaEditor.htmlContent;
+        this.debuggerContent = this.getHtmlContent();
         this.htmlDebuggerOpen = true;
       }
     }
@@ -158,7 +181,8 @@ export default class ApplicationController extends Controller {
 
   saveEditorContentToLocalStorage() {
     if (this._editorController) {
-      // localStorage.setItem("EDITOR_CONTENT", this.rdfaEditor.htmlContent);
+      const content = this.getHtmlContent();
+      localStorage.setItem('EDITOR_CONTENT', content || '');
     }
   }
 }
