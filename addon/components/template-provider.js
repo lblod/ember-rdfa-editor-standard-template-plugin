@@ -9,7 +9,6 @@ export default class TemplateProviderComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.templates.fetchTemplates.perform();
     this.args.controller.onEvent('selectionChanged', this.trackContext);
   }
 
