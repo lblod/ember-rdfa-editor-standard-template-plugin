@@ -51,7 +51,6 @@ export default class TemplateProviderComponent extends Component {
 
   @action
   trackContext(event) {
-    console.log('EVENT', event.payload);
     this.context = event.payload.parentDataset;
   }
 }
