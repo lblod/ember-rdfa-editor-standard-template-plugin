@@ -13,12 +13,21 @@ import instantiateUuids from '../utils/instantiate-uuids';
 export default class StandardTemplateCardComponent extends Component {
   @tracked menuOpen = false;
 
+  get controller() {
+    return this.args.controller;
+  }
+
+  get plugin() {
+    return this.args.plugin;
+  }
+
   @action
   async insert(template) {
     await template.reload();
-    this.controller.executeCommand(
+    const insertedRange = this.controller.executeCommand(
       'insert-html',
       instantiateUuids(template.body)
     );
+    this.plugin.highlightInRange(insertedRange);
   }
 }

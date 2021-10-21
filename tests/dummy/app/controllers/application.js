@@ -14,7 +14,7 @@ export default class ApplicationController extends Controller {
   unloadListener;
   xmlEditor;
   htmlEditor;
-  plugins = ['standard-template'];
+  plugins = ['text-styles', 'searching', 'standard-template'];
   controller;
 
   @tracked _editorController;
