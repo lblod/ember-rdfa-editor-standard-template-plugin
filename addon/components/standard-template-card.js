@@ -20,14 +20,4 @@ export default class StandardTemplateCardComponent extends Component {
   get plugin() {
     return this.args.plugin;
   }
-
-  @action
-  async insert(template) {
-    await template.reload();
-    const insertedRange = this.controller.executeCommand(
-      'insert-html',
-      instantiateUuids(template.body)
-    );
-    this.plugin.highlightInRange(insertedRange);
-  }
 }

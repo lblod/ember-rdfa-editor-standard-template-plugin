@@ -1,4 +1,4 @@
-<TemplateProvider @controller={{@controller}} as |provider|>
+<TemplateProvider @controller={{@controller}} @plugin={{@plugin}} as |provider|>
   {{#if provider.hasApplicableTemplates}}
     <div style="z-index: 999;position: relative">
       <div class="say-card__header">
@@ -11,7 +11,7 @@
           {{#unless provider.busy}}
             {{#each provider.applicableTemplates as |template|}}
               <li class="say-link-list__item link-list__item--sidenotes">
-                <button type="button" class="say-link-list__link" {{on "click" (fn this.insert template)}}>
+                <button type="button" class="say-link-list__link" {{on "click" (fn provider.insert template)}}>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="say-icon say-icon--large"
                        aria-hidden="true">
                     <path

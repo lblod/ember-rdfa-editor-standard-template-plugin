@@ -1,10 +1,10 @@
-<TemplateProvider @controller={{@controller}} as |provider|>
+<TemplateProvider @controller={{@controller}} @plugin={{@plugin}} as |provider|>
   {{#if provider.hasApplicableTemplates}}
     <AuDropdown @dropdownTitle="Voeg sjabloon in">
 
       {{#unless provider.busy}}
         {{#each provider.applicableTemplates as |template|}}
-          <AuButton @skin="tertiary" role="menuItem" {{on "click" (fn this.insert template)}}>
+          <AuButton @skin="tertiary" role="menuItem" {{on "click" (fn provider.insert template)}}>
             <AuIcon @icon="edit" @alignment="left" />
             {{template.title}}
           </AuButton>

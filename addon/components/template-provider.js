@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
+import instantiateUuids from '../utils/instantiate-uuids';
 
 export default class TemplateProviderComponent extends Component {
   @tracked context;
@@ -14,6 +15,10 @@ export default class TemplateProviderComponent extends Component {
 
   get busy() {
     return this.templates.fetchTemplates.isRunning;
+  }
+
+  get plugin() {
+    return this.args.plugin;
   }
 
   get controller() {
@@ -51,5 +56,24 @@ export default class TemplateProviderComponent extends Component {
   @action
   trackContext(event) {
     this.context = event.payload.parentDataset;
+  }
+
+  @action
+  async insert(template) {
+    await template.reload();
+    let insertRange = this.controller.selection.lastRange;
+    console.log(insertRange.toString());
+    if (insertRange.getTextAttributes().get('highlighted')) {
+      insertRange = this.controller.rangeFactory.fromAroundNode(
+        insertRange.getCommonAncestor()
+      );
+    }
+    const insertedRange = this.controller.executeCommand(
+      'insert-html',
+      instantiateUuids(template.body),
+      insertRange,
+      'right'
+    );
+    this.plugin.highlightInRange(this.controller.rangeFactory.fromAroundAll());
   }
 }

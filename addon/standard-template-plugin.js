@@ -54,7 +54,6 @@ export default class StandardTemplatePlugin {
       regexString += `${match}|`;
     });
     regexString = regexString.substring(0, regexString.length - 1);
-    console.log(regexString);
     const rangesToHighlight = this.controller.executeCommand(
       'match-text',
       range,
