@@ -28,15 +28,14 @@ export default class StandardTemplatePlugin {
     this.controller = controller;
     controller.registerWidget({
       desiredLocation: 'toolbar',
-      componentName: 'standard-template-card',
-      identifier: 'standard-template-card',
+      componentName: 'standard-template/toolbar-dropdown',
+      identifier: 'standard-template/toolbar-dropdown',
     });
     controller.registerWidget({
       desiredLocation: 'sidebar',
-      componentName: 'suggested-templates-card',
-      identifier: 'suggested-templates-card',
+      componentName: 'standard-template/card',
+      identifier: 'standard-template/card',
     });
-    controller.onEvent('contentChanged', this.highlight);
   }
 
   @action

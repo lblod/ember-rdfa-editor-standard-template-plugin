@@ -5,12 +5,12 @@ import { inject as service } from '@ember/service';
 import instantiateUuids from '../utils/instantiate-uuids';
 
 export default class TemplateProviderComponent extends Component {
-  @tracked context;
   @service templates;
+  @tracked applicableTemplates = [];
 
   constructor() {
     super(...arguments);
-    this.args.controller.onEvent('selectionChanged', this.trackContext);
+    this.args.controller.onEvent('selectionChanged', this.trackSelectionChange);
   }
 
   get busy() {
@@ -25,37 +25,38 @@ export default class TemplateProviderComponent extends Component {
     return this.args.controller;
   }
 
-  get applicableTemplates() {
-    if (!this.context) {
-      return [];
-    }
-    const dataset = this.context;
-    return (
-      this.templates.fetchTemplates.last.value?.filter((template) => {
-        const typePredicate = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
-        const containsTypes = dataset.some(
-          (quad) =>
-            quad.predicate.value === typePredicate &&
-            template.contexts.includes(quad.object.value)
-        );
-        const containsDisabledTypes = dataset.some(
-          (quad) =>
-            quad.predicate.value === typePredicate &&
-            template.disabledInContexts.includes(quad.object.value)
-        );
-
-        return containsTypes && !containsDisabledTypes;
-      }) || []
-    );
-  }
-
   get hasApplicableTemplates() {
     return this.applicableTemplates.length > 0;
   }
 
+  templateIsApplicable(template) {
+    const selectedRange = this.controller.selection.lastRange;
+    const rangeStore = this.controller.datastore.limitToRange(
+      selectedRange,
+      'rangeIsInside'
+    );
+    console.log('traking');
+
+    const containsTypes = rangeStore.match(null, 'a').dataset.some((quad) => {
+      console.log(quad);
+      return template.contexts.includes(quad.object.value);
+    });
+
+    const containsDisabledTypes = rangeStore
+      .match(null, 'a')
+      .dataset.some((quad) =>
+        template.disabledInContexts.includes(quad.object.value)
+      );
+
+    return containsTypes && !containsDisabledTypes;
+  }
+
   @action
-  trackContext(event) {
-    this.context = event.payload.parentDataset;
+  trackSelectionChange() {
+    this.applicableTemplates =
+      this.templates.fetchTemplates.last.value?.filter((template) =>
+        this.templateIsApplicable(template)
+      ) || [];
   }
 
   @action
