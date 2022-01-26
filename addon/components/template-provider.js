@@ -63,13 +63,7 @@ export default class TemplateProviderComponent extends Component {
   async insert(template) {
     await template.reload();
     let insertRange = this.controller.selection.lastRange;
-    console.log(insertRange.toString());
-    if (insertRange.getTextAttributes().get('highlighted')) {
-      insertRange = this.controller.rangeFactory.fromAroundNode(
-        insertRange.getCommonAncestor()
-      );
-    }
-    const insertedRange = this.controller.executeCommand(
+    this.controller.executeCommand(
       'insert-html',
       instantiateUuids(template.body),
       insertRange,

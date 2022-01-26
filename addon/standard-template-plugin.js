@@ -31,11 +31,6 @@ export default class StandardTemplatePlugin {
       componentName: 'standard-template/toolbar-dropdown',
       identifier: 'standard-template/toolbar-dropdown',
     });
-    controller.registerWidget({
-      desiredLocation: 'sidebar',
-      componentName: 'standard-template/card',
-      identifier: 'standard-template/card',
-    });
   }
 
   @action
