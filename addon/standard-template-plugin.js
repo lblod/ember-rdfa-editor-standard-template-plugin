@@ -20,7 +20,6 @@ export default class StandardTemplatePlugin {
       );
     }
     if (templates) {
-      console.log(templates);
       templates.forEach((template) => {
         template.matches.forEach((match) => this.matches.add(match));
       });

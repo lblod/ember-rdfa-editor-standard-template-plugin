@@ -35,10 +35,8 @@ export default class TemplateProviderComponent extends Component {
       selectedRange,
       'rangeIsInside'
     );
-    console.log('traking');
 
     const containsTypes = rangeStore.match(null, 'a').dataset.some((quad) => {
-      console.log(quad);
       return template.contexts.includes(quad.object.value);
     });
 
