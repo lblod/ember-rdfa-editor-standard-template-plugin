@@ -61,6 +61,11 @@ export default class TemplateProviderComponent extends Component {
   async insert(template) {
     await template.reload();
     let insertRange = this.controller.selection.lastRange;
+    if (insertRange.getTextAttributes().get('highlighted') !== 'disabled') {
+      insertRange = this.controller.rangeFactory.fromAroundNode(
+        insertRange.getCommonAncestor()
+      );
+    }
     this.controller.executeCommand(
       'insert-html',
       instantiateUuids(template.body),
