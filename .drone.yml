@@ -3,11 +3,14 @@ kind: pipeline
 type: docker
 name: verify
 steps:
-- name: test
-  image: danlynn/ember-cli:3.20.0
+- name: install
+  image: danlynn/ember-cli:3.24.0
   commands:
-  - npm install
-  - npm test
+  - npm ci
+- name: test
+  image: danlynn/ember-cli:3.24.0
+  commands:
+    - npm test
 trigger:
   event:
     - push
