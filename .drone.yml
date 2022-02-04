@@ -10,7 +10,12 @@ steps:
 - name: test
   image: danlynn/ember-cli:3.24.0
   commands:
-    - npm test
+    - npm run test:ember
+- name: test-compat
+  image: danlynn/ember-cli:3.24.0
+  failure: ignore
+  commands:
+    - npm run test:ember-compatibility
 trigger:
   event:
     - push
