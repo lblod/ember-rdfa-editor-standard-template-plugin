@@ -5,9 +5,9 @@ RDFa editor plugin to insert standard templates in the editor. Depending on the 
 
 ## Compatibility
 
-* Ember.js v3.16 or above
-* Ember CLI v2.13 or above
-* Node.js v10 or above
+* Ember.js v3.24 or above
+* Ember CLI v3.24 or above
+* Node.js v14 or above
 
 
 ## Installation
