@@ -1,36 +1,30 @@
-@import "ember-rdfa-editor";
-@import "ember-rdfa-editor/s-root.scss";
-@import "appuniversum/s-colors.scss";
-@import "appuniversum/s-global";
-@import "appuniversum/s-utilities";
+// Include ember-appuniversum
 @import "ember-appuniversum";
-@import "g-reset";
 
-.au-c-rdfa-editor {
-  width: 50%;
-}
+// Import rdfa editor
+@import "ember-rdfa-editor/custom-components";
+
 /* ==========================================================================
    #DUMMY STYLES
    ========================================================================== */
-
 
 .c-dummy {
   display: flex; /* [3] */
   flex-direction: column;
   justify-content: stretch;
-  height: 97vh;
+  height: 100vh;
   overflow: hidden;
 }
 
 .c-dummy__header {
   position: relative;
 
-  > h1 {
+  h1 {
     font-size: 2.6rem;
     font-weight: 700;
   }
 
-  > h2 {
+  h2 {
     font-size: 1.8rem;
     font-weight: 700;
   }
@@ -43,27 +37,27 @@
   > p > a {
     transition: color .3s ease-in-out, text-decoration 3s ease-in-out;
     font-weight: 500;
-    text-decoration-color: $say-primary-300;
+    text-decoration-color: var(--au-blue-300);
   }
 
   > a,
   > p > a,
   > a:visited,
   > p > a:visited {
-    color: $say-primary-700;
+    color: var(--au-blue-700);
   }
 
   > a:hover,
   > p > a:hover,
   > a:focus,
   > p > a:focus {
-    color: $say-primary-700;
-    text-decoration-color: $say-primary-300;
+    color: var(--au-blue-700);
+    text-decoration-color: var(--au-blue-300);
   }
 
   > a:focus,
   > p > a:focus {
-    outline: .2rem dashed $say-primary-300;
+    outline: .2rem dashed var(--au-blue-300);
     outline-offset: .2rem;
   }
 
