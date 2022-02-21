@@ -61,7 +61,7 @@ export default class TemplateProviderComponent extends Component {
   async insert(template) {
     await template.reload();
     let insertRange = this.controller.selection.lastRange;
-    if (insertRange.getTextAttributes().get('highlighted') !== 'disabled') {
+    if (insertRange.getMarks().hasMarkName('highlighted')) {
       insertRange = this.controller.rangeFactory.fromAroundNode(
         insertRange.getCommonAncestor()
       );
@@ -72,6 +72,5 @@ export default class TemplateProviderComponent extends Component {
       insertRange,
       'right'
     );
-    this.plugin.highlightInRange(this.controller.rangeFactory.fromAroundAll());
   }
 }
