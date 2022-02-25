@@ -29,27 +29,34 @@
     "test:ember-compatibility": "ember try:each"
   },
   "dependencies": {
-    "ember-cli-babel": "^7.23.0",
+    "ember-cli-babel": "^7.26.6",
     "ember-cli-htmlbars": "^5.3.1",
     "ember-mu-transform-helpers": "^2.0.0",
     "ember-auto-import": "^2.2.2",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@appuniversum/ember-appuniversum": "^0.11.0",
+    "@codemirror/basic-setup": "^0.19.0",
+    "@codemirror/lang-html": "^0.19.3",
+    "@codemirror/lang-xml": "^0.19.2",
     "@ember/optional-features": "^2.0.0",
     "@ember/test-helpers": "^2.1.4",
     "@glimmer/component": "^1.0.3",
     "@glimmer/tracking": "^1.0.3",
+    "@lblod/ember-rdfa-editor": "^0.50.0-beta.8",
     "babel-eslint": "^10.1.0",
     "broccoli-asset-rev": "^3.0.0",
     "ember-cli": "~3.24.0",
+    "ember-cli-autoprefixer": "^1.0.3",
     "ember-cli-dependency-checker": "^3.2.0",
     "ember-cli-inject-live-reload": "^2.0.2",
-    "ember-cli-moment-shim": "^3.7.1",
     "ember-cli-release": "^1.0.0-beta.2",
+    "ember-cli-sass": "^10.0.1",
     "ember-cli-sri": "^2.1.1",
     "ember-cli-terser": "^4.0.1",
     "ember-cli-update": "^0.21.3",
+    "ember-data": "^3.28.3",
     "ember-disable-prototype-extensions": "^1.1.3",
     "ember-export-application-global": "^2.0.1",
     "ember-load-initializers": "^2.1.2",
@@ -71,14 +78,18 @@
     "prettier": "^2.2.1",
     "qunit": "^2.13.0",
     "qunit-dom": "^1.6.0",
-    "webpack": "^5.58.2"
+    "sass": "^1.39.0",
+    "webpack": "^5.58.2",
+    "xml-formatter": "^2.5.0"
   },
   "peerDepencies": {
     "ember-concurrency": "*",
-    "ember-concurrency-decorators": "^2.0.3"
+    "ember-concurrency-decorators": "^2.0.3",
+    "@lblod/ember-rdfa-editor": "^0.50.0-beta.8",
+    "webpack": "5.x"
   },
   "engines": {
-    "node": "10.* || >= 12"
+    "node": "10.* || >= 14"
   },
   "ember": {
     "edition": "octane"

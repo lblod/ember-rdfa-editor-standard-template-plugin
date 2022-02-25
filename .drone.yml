@@ -3,11 +3,19 @@ kind: pipeline
 type: docker
 name: verify
 steps:
-- name: test
-  image: danlynn/ember-cli:3.20.0
+- name: install
+  image: danlynn/ember-cli:3.24.0
   commands:
-  - npm install
-  - npm test
+  - npm ci
+- name: test
+  image: danlynn/ember-cli:3.24.0
+  commands:
+    - npm run test:ember
+- name: test-compat
+  image: danlynn/ember-cli:3.24.0
+  failure: ignore
+  commands:
+    - npm run test:ember-compatibility
 trigger:
   event:
     - push

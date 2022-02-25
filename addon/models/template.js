@@ -1,6 +1,9 @@
-import Model from '@ember-data/model';
-// eslint-disable-next-line ember/no-mixins
-import TemplateModelMixin from '../mixins/template-model';
+import Model, { attr } from '@ember-data/model';
 
-// eslint-disable-next-line ember/no-classic-classes
-export default Model.extend(TemplateModelMixin, {});
+export default class TemplateModel extends Model {
+  @attr title;
+  @attr('string-set', { defaultValue: () => [] }) matches;
+  @attr body;
+  @attr('string-set', { defaultValue: () => [] }) contexts;
+  @attr('string-set', { defaultValue: () => [] }) disabledInContexts;
+}
