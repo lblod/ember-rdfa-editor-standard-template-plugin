@@ -1,4 +1,4 @@
-<TemplateProvider @controller={{@controller}} @plugin={{@plugin}} as |provider|>
+<TemplateProvider @controller={{@controller}} as |provider|>
   {{#if provider.hasApplicableTemplates}}
     <AuDropdown @dropdownTitle="Voeg sjabloon in">
       {{#unless provider.busy}}

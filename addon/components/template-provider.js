@@ -17,10 +17,6 @@ export default class TemplateProviderComponent extends Component {
     return this.templates.fetchTemplates.isRunning;
   }
 
-  get plugin() {
-    return this.args.plugin;
-  }
-
   get controller() {
     return this.args.controller;
   }

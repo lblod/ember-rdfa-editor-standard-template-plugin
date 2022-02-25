@@ -7,8 +7,4 @@ export default class StandardTemplateToolbarDropdownComponent extends Component 
   get controller() {
     return this.args.controller;
   }
-
-  get plugin() {
-    return this.args.plugin;
-  }
 }
