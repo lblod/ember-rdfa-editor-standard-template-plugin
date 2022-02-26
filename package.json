@@ -1,6 +1,6 @@
 {
   "name": "@lblod/ember-rdfa-editor-standard-template-plugin",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "RDFa editor plugin to insert standard templates in the editor",
   "keywords": [
     "ember-addon"

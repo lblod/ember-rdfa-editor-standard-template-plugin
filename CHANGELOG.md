@@ -1,4 +1,14 @@
 
+
+## 0.11.0 (2022-02-26)
+
+#### :house: Internal
+* [#14](https://github.com/lblod/ember-rdfa-editor-standard-template-plugin/pull/14) Bump editor to 0.50.0 ([@abeforgit](https://github.com/abeforgit))
+
+#### Committers: 1
+- Arne Bertrand ([@abeforgit](https://github.com/abeforgit))
+
+
 ## 0.10.0 (2022-02-25)
 
 #### :boom: Breaking Change
