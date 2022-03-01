@@ -42,7 +42,6 @@
     "@codemirror/lang-xml": "^0.19.2",
     "@ember/optional-features": "^2.0.0",
     "@ember/test-helpers": "^2.6.0",
-    "@embroider/test-setup": "^0.48.1",
     "@glimmer/component": "^1.0.4",
     "@glimmer/tracking": "^1.0.4",
     "@lblod/ember-rdfa-editor": "^0.50.0",
