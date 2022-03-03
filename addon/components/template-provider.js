@@ -5,7 +5,7 @@ import { inject as service } from '@ember/service';
 import instantiateUuids from '../utils/instantiate-uuids';
 
 export default class TemplateProviderComponent extends Component {
-  @service templates;
+  @service rdfaEditorStandardTemplatePlugin;
   @tracked applicableTemplates = [];
 
   constructor() {
@@ -14,7 +14,7 @@ export default class TemplateProviderComponent extends Component {
   }
 
   get busy() {
-    return this.templates.fetchTemplates.isRunning;
+    return this.rdfaEditorStandardTemplatePlugin.fetchTemplates.isRunning;
   }
 
   get controller() {
@@ -48,7 +48,7 @@ export default class TemplateProviderComponent extends Component {
   @action
   trackSelectionChange() {
     this.applicableTemplates =
-      this.templates.fetchTemplates.last.value?.filter((template) =>
+      this.rdfaEditorStandardTemplatePlugin.fetchTemplates.last.value?.filter((template) =>
         this.templateIsApplicable(template)
       ) || [];
   }
