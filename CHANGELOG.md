@@ -1,5 +1,17 @@
 
 
+## 0.11.1 (2022-03-03)
+
+#### :bug: Bug Fix
+* [#16](https://github.com/lblod/ember-rdfa-editor-standard-template-plugin/pull/16) Bugfix/revert service rename ([@nvdk](https://github.com/nvdk))
+
+#### :house: Internal
+* [#15](https://github.com/lblod/ember-rdfa-editor-standard-template-plugin/pull/15) Update dependencies ([@abeforgit](https://github.com/abeforgit))
+
+#### Committers: 2
+- Arne Bertrand ([@abeforgit](https://github.com/abeforgit))
+- Niels V ([@nvdk](https://github.com/nvdk))
+
 ## 0.11.0 (2022-02-26)
 
 #### :house: Internal
