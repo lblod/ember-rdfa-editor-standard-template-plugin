@@ -18,4 +18,14 @@ module.exports = function (defaults) {
   */
 
   return app.toTree();
+
+  // Following block disabled to prevent infinite build time
+  //const { maybeEmbroider } = require('@embroider/test-setup');
+  //return maybeEmbroider(app, {
+  //  skipBabel: [
+  //    {
+  //      package: 'qunit',
+  //    },
+  //  ],
+  //});
 };

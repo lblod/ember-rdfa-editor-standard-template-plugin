@@ -7,6 +7,6 @@ module('Unit | Utility | instantiate-uuids', function () {
     const templateString =
       'http://data.lblod.info/id/besluiten/${generateUuid()}"';
     let result = instantiateUuids(templateString);
-    assert.ok(!result.includes('generateUuid'));
+    assert.notOk(result.includes('generateUuid'));
   });
 });
