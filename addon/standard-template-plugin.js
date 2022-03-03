@@ -2,7 +2,7 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 
 export default class StandardTemplatePlugin {
-  @service templates;
+  @service rdfaEditorStandardTemplatePlugin;
   matches = new Set();
   controller;
 
@@ -13,7 +13,7 @@ export default class StandardTemplatePlugin {
   async initialize(controller) {
     let templates;
     try {
-      templates = await this.templates.fetchTemplates.perform();
+      templates = await this.rdfaEditorStandardTemplatePlugin.fetchTemplates.perform();
     } catch (e) {
       console.warn(
         `Plugin ${this.name} had trouble initializing: Templates failed to load`
