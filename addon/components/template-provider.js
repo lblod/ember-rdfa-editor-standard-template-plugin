@@ -48,8 +48,8 @@ export default class TemplateProviderComponent extends Component {
   @action
   trackSelectionChange() {
     this.applicableTemplates =
-      this.rdfaEditorStandardTemplatePlugin.fetchTemplates.last.value?.filter((template) =>
-        this.templateIsApplicable(template)
+      this.rdfaEditorStandardTemplatePlugin.fetchTemplates.last.value?.filter(
+        (template) => this.templateIsApplicable(template)
       ) || [];
   }
 

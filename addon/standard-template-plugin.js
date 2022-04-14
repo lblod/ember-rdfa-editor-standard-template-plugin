@@ -13,7 +13,8 @@ export default class StandardTemplatePlugin {
   async initialize(controller) {
     let templates;
     try {
-      templates = await this.rdfaEditorStandardTemplatePlugin.fetchTemplates.perform();
+      templates =
+        await this.rdfaEditorStandardTemplatePlugin.fetchTemplates.perform();
     } catch (e) {
       console.warn(
         `Plugin ${this.name} had trouble initializing: Templates failed to load`
@@ -26,9 +27,9 @@ export default class StandardTemplatePlugin {
     }
     this.controller = controller;
     controller.registerWidget({
-      desiredLocation: 'toolbar',
-      componentName: 'standard-template/toolbar-dropdown',
-      identifier: 'standard-template/toolbar-dropdown',
+      desiredLocation: 'sidebar',
+      componentName: 'standard-template/template-card',
+      identifier: 'standard-template/template-card',
     });
   }
 
