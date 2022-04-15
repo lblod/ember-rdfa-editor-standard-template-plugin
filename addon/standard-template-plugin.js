@@ -27,7 +27,7 @@ export default class StandardTemplatePlugin {
     }
     this.controller = controller;
     controller.registerWidget({
-      desiredLocation: 'sidebar',
+      desiredLocation: 'insertSidebar',
       componentName: 'standard-template/template-card',
       identifier: 'standard-template/template-card',
     });
