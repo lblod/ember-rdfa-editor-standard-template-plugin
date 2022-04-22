@@ -1,6 +1,5 @@
 <TemplateProvider @controller={{@controller}} as |provider|>
   {{#if provider.hasApplicableTemplates}}
-  <AuList @divider={{true}}>
     {{#each provider.applicableTemplates as |template|}}
       <AuList::Item>
         <AuButton
@@ -13,6 +12,5 @@
         </AuButton>
       </AuList::Item>
     {{/each}}
-  </AuList>
   {{/if}}
 </TemplateProvider>
