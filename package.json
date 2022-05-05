@@ -32,11 +32,13 @@
     "ember-auto-import": "^2.4.0",
     "ember-cli-babel": "^7.26.11",
     "ember-cli-htmlbars": "^5.7.2",
+    "ember-concurrency": "^2.2.1",
+    "ember-concurrency-decorators": "^2.0.3",
     "ember-mu-transform-helpers": "^2.1.2",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@appuniversum/ember-appuniversum": "^1.0.2",
+    "@appuniversum/ember-appuniversum": "^1.0.7",
     "@codemirror/basic-setup": "^0.19.1",
     "@codemirror/lang-html": "^0.19.3",
     "@codemirror/lang-xml": "^0.19.2",
@@ -44,7 +46,7 @@
     "@ember/test-helpers": "^2.6.0",
     "@glimmer/component": "^1.0.4",
     "@glimmer/tracking": "^1.0.4",
-    "@lblod/ember-rdfa-editor": "^0.50.0",
+    "@lblod/ember-rdfa-editor": ">=0.57.0",
     "babel-eslint": "^10.1.0",
     "broccoli-asset-rev": "^3.0.0",
     "ember-auto-import": "^2.4.0",
@@ -87,8 +89,8 @@
   "peerDepencies": {
     "ember-concurrency": "*",
     "ember-concurrency-decorators": "^2.0.3",
-    "@appuniversum/ember-appuniversum": "^1.0.2",
-    "@lblod/ember-rdfa-editor": "^0.50.0",
+    "@appuniversum/ember-appuniversum": "^1.0.7",
+    "@lblod/ember-rdfa-editor": ">=0.57.0",
     "webpack": "5.x"
   },
   "engines": {

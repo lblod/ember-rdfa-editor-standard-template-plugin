@@ -36,7 +36,7 @@ export default class RdfaEditorStandardTemplatePluginService extends Service {
       return (
         rdfaTypes.filter((e) => template.get('contexts').includes(e)).length >
           0 &&
-          rdfaTypes.filter((e) => template.get('disabledInContexts').includes(e))
+        rdfaTypes.filter((e) => template.get('disabledInContexts').includes(e))
           .length === 0
       );
     };
