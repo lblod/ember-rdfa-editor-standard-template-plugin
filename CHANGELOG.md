@@ -1,5 +1,13 @@
 
 
+## 0.12.0 (2022-05-05)
+
+#### :rocket: Enhancement
+* [#18](https://github.com/lblod/ember-rdfa-editor-standard-template-plugin/pull/18) widget redesign ([@Asergey91](https://github.com/Asergey91))
+
+#### Committers: 1
+- Sergey Andreev ([@Asergey91](https://github.com/Asergey91))
+
 ## 0.11.1 (2022-03-03)
 
 #### :bug: Bug Fix
