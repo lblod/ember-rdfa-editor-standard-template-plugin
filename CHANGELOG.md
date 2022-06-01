@@ -1,5 +1,14 @@
 
 
+
+## 0.12.1 (2022-06-01)
+
+#### :bug: Bug Fix
+* [#20](https://github.com/lblod/ember-rdfa-editor-standard-template-plugin/pull/20) this.app is not defined when put on addons ([@lagartoverde](https://github.com/lagartoverde))
+
+#### Committers: 1
+- Oscar Rodriguez Villalobos ([@lagartoverde](https://github.com/lagartoverde))
+
 ## 0.12.0 (2022-05-05)
 
 #### :rocket: Enhancement
