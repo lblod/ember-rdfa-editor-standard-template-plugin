@@ -4,15 +4,15 @@ type: docker
 name: verify
 steps:
 - name: install
-  image: danlynn/ember-cli:3.24.0
+  image: danlynn/ember-cli:3.28.5
   commands:
   - npm ci
 - name: test
-  image: danlynn/ember-cli:3.24.0
+  image: danlynn/ember-cli:3.28.5
   commands:
     - npm run test:ember
 - name: test-compat
-  image: danlynn/ember-cli:3.24.0
+  image: danlynn/ember-cli:3.28.5
   failure: ignore
   commands:
     - npm run test:ember-compatibility
