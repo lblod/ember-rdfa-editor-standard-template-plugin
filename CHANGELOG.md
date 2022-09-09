@@ -1,6 +1,22 @@
 
 
 
+
+## 0.13.0 (2022-09-09)
+
+#### :boom: Breaking Change
+* [#24](https://github.com/lblod/ember-rdfa-editor-standard-template-plugin/pull/24) chore(deps)!: bump editor to v0.63.1 ([@abeforgit](https://github.com/abeforgit))
+
+#### :house: Internal
+* [#19](https://github.com/lblod/ember-rdfa-editor-standard-template-plugin/pull/19) remove ember-cli-release and bump package.json file to version 2 ([@nvdk](https://github.com/nvdk))
+* [#22](https://github.com/lblod/ember-rdfa-editor-standard-template-plugin/pull/22) Bump terser from 4.8.0 to 4.8.1 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#17](https://github.com/lblod/ember-rdfa-editor-standard-template-plugin/pull/17) Bump moment from 2.29.1 to 2.29.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
+
+#### Committers: 2
+- Arne Bertrand ([@abeforgit](https://github.com/abeforgit))
+- Niels V ([@nvdk](https://github.com/nvdk))
+
+
 ## 0.12.1 (2022-06-01)
 
 #### :bug: Bug Fix
