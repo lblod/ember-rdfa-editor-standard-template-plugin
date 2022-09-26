@@ -1,5 +1,4 @@
 import { inject as service } from '@ember/service';
-import { action } from '@ember/object';
 
 export default class StandardTemplatePlugin {
   @service rdfaEditorStandardTemplatePlugin;
@@ -33,28 +32,32 @@ export default class StandardTemplatePlugin {
     });
   }
 
-  @action
-  highlight(event) {
-    if (event.owner !== this.name) {
-      const damagedRange = event.payload.damagedRange;
-      this.highlightInRange(damagedRange);
-    }
-  }
+  // @action
+  // highlight(event) {
+  //   if (event.owner !== this.name) {
+  //     const damagedRange = event.payload.damagedRange;
+  //     this.highlightInRange(damagedRange);
+  //   }
+  // }
 
-  @action
-  highlightInRange(range) {
-    let regexString = '';
-    this.matches.forEach((match) => {
-      regexString += `${match}|`;
-    });
-    regexString = regexString.substring(0, regexString.length - 1);
-    const rangesToHighlight = this.controller.executeCommand(
-      'match-text',
-      range,
-      new RegExp(regexString, 'g')
-    );
-    for (const range of rangesToHighlight) {
-      this.controller.executeCommand('make-highlight', range, false);
-    }
-  }
+  // @action
+  // highlightInRange(range) {
+  //   let regexString = '';
+  //   this.matches.forEach((match) => {
+  //     regexString += `${match}|`;
+  //   });
+  //   regexString = regexString.substring(0, regexString.length - 1);
+  //   this.controller.perform((tr) => {
+  //     const rangesToHighlight = tr.matchText({
+  //       limitRange: range,
+  //       regex: new RegExp(regexString, 'g'),
+  //     });
+  //     for (const range of rangesToHighlight) {
+  //       tr.commands.makeHighlight({
+
+  //       })
+  //       this.controller.executeCommand('make-highlight', range, false);
+  //     }
+  //   });
+  // }
 }

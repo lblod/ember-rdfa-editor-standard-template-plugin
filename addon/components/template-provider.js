@@ -10,7 +10,7 @@ export default class TemplateProviderComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.args.controller.onEvent('selectionChanged', this.trackSelectionChange);
+    this.args.controller.addTransactionStepListener(this.onTransactionUpdate);
   }
 
   get busy() {
@@ -25,12 +25,11 @@ export default class TemplateProviderComponent extends Component {
     return this.applicableTemplates.length > 0;
   }
 
-  templateIsApplicable(template) {
-    const selectedRange = this.controller.selection.lastRange;
-    const rangeStore = this.controller.datastore.limitToRange(
-      selectedRange,
-      'rangeIsInside'
-    );
+  templateIsApplicable(transaction, template) {
+    const selectedRange = transaction.currentSelection.lastRange;
+    const rangeStore = transaction
+      .getCurrentDataStore()
+      .limitToRange(selectedRange, 'rangeIsInside');
 
     const containsTypes = rangeStore.match(null, 'a').dataset.some((quad) => {
       return template.contexts.includes(quad.object.value);
@@ -45,12 +44,20 @@ export default class TemplateProviderComponent extends Component {
     return containsTypes && !containsDisabledTypes;
   }
 
+  modifiesSelection(steps) {
+    return steps.some(
+      (step) => step.type === 'selection-step' || step.type === 'operation-step'
+    );
+  }
+
   @action
-  trackSelectionChange() {
-    this.applicableTemplates =
-      this.rdfaEditorStandardTemplatePlugin.fetchTemplates.last.value?.filter(
-        (template) => this.templateIsApplicable(template)
-      ) || [];
+  onTransactionUpdate(transaction, steps) {
+    if (this.modifiesSelection(steps)) {
+      this.applicableTemplates =
+        this.rdfaEditorStandardTemplatePlugin.fetchTemplates.last.value?.filter(
+          (template) => this.templateIsApplicable(transaction, template)
+        ) || [];
+    }
   }
 
   @action
@@ -62,11 +69,17 @@ export default class TemplateProviderComponent extends Component {
         insertRange.getCommonAncestor()
       );
     }
-    this.controller.executeCommand(
-      'insert-html',
-      instantiateUuids(template.body),
-      insertRange,
-      'right'
-    );
+    this.controller.perform((tr) => {
+      tr.commands.insertHtml({
+        htmlString: instantiateUuids(template.body),
+        range: insertRange,
+      });
+    });
+    // this.controller.executeCommand(
+    //   'insert-html',
+    //   instantiateUuids(template.body),
+    //   insertRange,
+    //   'right'
+    // );
   }
 }
