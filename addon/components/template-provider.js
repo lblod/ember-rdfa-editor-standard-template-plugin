@@ -27,6 +27,9 @@ export default class TemplateProviderComponent extends Component {
 
   templateIsApplicable(template) {
     const selectedRange = this.controller.selection.lastRange;
+    if (!selectedRange) {
+      return false;
+    }
     const rangeStore = this.controller.datastore.limitToRange(
       selectedRange,
       'rangeIsInside'
