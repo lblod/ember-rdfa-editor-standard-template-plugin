@@ -13,6 +13,13 @@ export default class TemplateProviderComponent extends Component {
     this.args.controller.addTransactionStepListener(this.onTransactionUpdate);
   }
 
+  willDestroy() {
+    this.args.controller.removeTransactionStepListener(
+      this.onTransactionUpdate
+    );
+    super.willDestroy();
+  }
+
   get busy() {
     return this.rdfaEditorStandardTemplatePlugin.fetchTemplates.isRunning;
   }
@@ -53,15 +60,14 @@ export default class TemplateProviderComponent extends Component {
     );
   }
 
-  @action
-  onTransactionUpdate(transaction, steps) {
+  onTransactionUpdate = (transaction, steps) => {
     if (this.modifiesSelection(steps)) {
       this.applicableTemplates =
         this.rdfaEditorStandardTemplatePlugin.fetchTemplates.last.value?.filter(
           (template) => this.templateIsApplicable(transaction, template)
         ) || [];
     }
-  }
+  };
 
   @action
   async insert(template) {

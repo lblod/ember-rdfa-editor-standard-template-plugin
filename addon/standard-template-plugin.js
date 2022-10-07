@@ -3,13 +3,12 @@ import { inject as service } from '@ember/service';
 export default class StandardTemplatePlugin {
   @service rdfaEditorStandardTemplatePlugin;
   matches = new Set();
-  controller;
 
   get name() {
     return 'standard-template';
   }
 
-  async initialize(controller) {
+  async initialize(transaction, controller) {
     let templates;
     try {
       templates =
@@ -24,11 +23,13 @@ export default class StandardTemplatePlugin {
         template.matches.forEach((match) => this.matches.add(match));
       });
     }
-    this.controller = controller;
-    controller.registerWidget({
-      desiredLocation: 'insertSidebar',
-      componentName: 'standard-template/template-card',
-      identifier: 'standard-template/template-card',
-    });
+    transaction.registerWidget(
+      {
+        desiredLocation: 'insertSidebar',
+        componentName: 'standard-template/template-card',
+        identifier: 'standard-template/template-card',
+      },
+      controller
+    );
   }
 }
