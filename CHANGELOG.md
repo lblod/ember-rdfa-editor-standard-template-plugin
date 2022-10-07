@@ -2,6 +2,25 @@
 
 
 
+
+
+## 0.13.2 (2022-10-07)
+
+#### :house: Internal
+* [#28](https://github.com/lblod/ember-rdfa-editor-standard-template-plugin/pull/28) Add release-it packages and release script ([@elpoelma](https://github.com/elpoelma))
+
+#### Committers: 1
+- Elena Poelman ([@elpoelma](https://github.com/elpoelma))
+
+## 0.13.1 (2022-09-29)
+
+#### :bug: Bug Fix
+* [#26](https://github.com/lblod/ember-rdfa-editor-standard-template-plugin/pull/26) fix(selection-handler): handle cases with empty selection ([@abeforgit](https://github.com/abeforgit))
+
+#### Committers: 1
+- Arne Bertrand ([@abeforgit](https://github.com/abeforgit))
+
+
 ## 0.13.0 (2022-09-09)
 
 #### :boom: Breaking Change

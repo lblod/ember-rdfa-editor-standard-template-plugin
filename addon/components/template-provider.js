@@ -27,6 +27,9 @@ export default class TemplateProviderComponent extends Component {
 
   templateIsApplicable(transaction, template) {
     const selectedRange = transaction.currentSelection.lastRange;
+    if (!selectedRange) {
+      return false;
+    }
     const rangeStore = transaction
       .getCurrentDataStore()
       .limitToRange(selectedRange, 'rangeIsInside');
