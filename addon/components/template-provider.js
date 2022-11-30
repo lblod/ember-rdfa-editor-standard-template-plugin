@@ -51,11 +51,19 @@ export default class TemplateProviderComponent extends Component {
   async insert(template) {
     await template.reload();
     const selection = this.controller.state.selection;
-    // if (insertRange.getMarks().hasMarkName('highlighted')) {
-    //   insertRange = this.controller.rangeFactory.fromAroundNode(
-    //     insertRange.getCommonAncestor()
-    //   );
-    // }
+    let insertRange = selection;
+    const { $from, $to } = selection;
+    console.log('PARENT: ', $from.parent);
+    if (
+      $from.parent.type === this.controller.schema.nodes.placeholder &&
+      $from.sameParent($to)
+    ) {
+      insertRange = {
+        from: $from.start($from.depth - 1),
+        to: $from.end($from.depth - 1),
+      };
+      console.log(insertRange);
+    }
 
     const domParser = new DOMParser();
     const contentFragment = ProseParser.fromSchema(
@@ -64,7 +72,7 @@ export default class TemplateProviderComponent extends Component {
       domParser.parseFromString(instantiateUuids(template.body), 'text/html')
     ).content;
     this.controller.withTransaction((tr) => {
-      return tr.replaceWith(selection.from, selection.to, contentFragment);
+      return tr.replaceWith(insertRange.from, insertRange.to, contentFragment);
     });
   }
 }
