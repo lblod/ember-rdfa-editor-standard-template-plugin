@@ -1,5 +1,7 @@
 # @lblod/ember-rdfa-editor-standard-template-plugin
 
+:warning: This ember addon is no longer maintained. Please use [@lblod/ember-rdfa-editor-lblod-plugins](https://github.com/lblod/ember-rdfa-editor-lblod-plugins) instead.
+
 RDFa editor plugin to insert standard templates in the editor. Depending on the position of the cursor or selected text, a dropdown will appear in the toolbar of the editor that lets you insert a template for the proper context at the location of the cursor.
 
 
